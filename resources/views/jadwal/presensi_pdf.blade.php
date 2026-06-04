@@ -127,7 +127,9 @@
                 <h3>Fakultas Teknologi Informasi</h3>
                 <h3>Program Studi Sistem Informasi</h3>
                 {{-- Mengambil nama user yang sedang login --}}
-                <p>Dicetak oleh: {{ auth()->check() ? auth()->user()->name : 'Sistem' }}</p>
+                <p>Dicetak oleh Nama: {{ auth()->check() ? auth()->user()->name : 'Sistem' }}</p>                
+                <p>Dicetak oleh NIM: {{ auth()->check() ? auth()->user()->nim : 'Sistem' }}</p>
+
             </td>
         </tr>
     </table>
@@ -192,10 +194,10 @@
                 <tr>
                     <td colspan="17" class="text-center">Belum ada mahasiswa yang mengambil mata kuliah ini.</td>
                 </tr>
-            @endforelsegi
+            @endforelse
         </tbody>
     </table>
-
+    <h3>Jumlah Mahasiswa {{ $jadwal->krskhs->count() }} Orang</h3>
 </body>
 
 </html>

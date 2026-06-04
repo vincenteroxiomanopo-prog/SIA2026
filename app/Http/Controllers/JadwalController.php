@@ -96,12 +96,8 @@ class JadwalController extends Controller
     }
     public function cetakPresensi($id)
     {
-        // Eager loading relasi berlapis: jadwal -> krskhs -> registrasi -> mahasiswa
         $jadwal = Jadwal::with(['matakuliah', 'dosen', 'krskhs.registrasi.mahasiswa'])->findOrFail($id);
-
-        // Kirim data ke view PDF
-        // Contoh di JadwalController.php
-        $pdf = Pdf::loadView('jadwal.presensi_pdf', compact('jadwal'))->setPaper('a4', 'landscape'); // disarankan landscape karena ada 17 kolom tabel
+        $pdf = Pdf::loadView('jadwal.presensi_pdf', compact('jadwal'))->setPaper('a4', 'landscape');
         $pdf->setOption(['isRemoteEnabled' => true]);
         return $pdf->stream('presensi.pdf');
     }
