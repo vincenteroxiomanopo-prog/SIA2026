@@ -119,9 +119,9 @@
 
     <table class="header-table">
         <tr>
-<td class="header-logo">
-    <img src="{{ public_path('images/logo-ukdw.PNG') }}" alt="Logo UKDW">
-</td>
+            <td class="header-logo">
+                <img src="{{ public_path('images/logo-ukdw.PNG') }}" alt="Logo UKDW">
+            </td>
             <td class="header-text">
                 <h1>UNIVERSITAS KRISTEN DUTA WACANA</h1>
                 <h3>Fakultas Teknologi Informasi</h3>
@@ -165,12 +165,11 @@
     <table class="table-presensi">
         <thead>
             <tr>
-                <th rowspan="2" width="3%">No</th>
-                <th rowspan="2" width="10%">NIM</th>
-                <th rowspan="2" width="22%">Nama Mahasiswa</th>
-                <th colspan="14">Tanggal Pertemuan (Tgl)</th>
-            </tr>
-            <tr>
+                <th width="3%">No</th>
+                <th width="10%">NIM</th>
+                <th width="22%">Nama Mahasiswa</th>
+
+                {{-- Looping langsung untuk kolom Tgl: tanpa header grup di atasnya --}}
                 @for ($i = 1; $i <= 14; $i++)
                     <th width="4%">Tgl:</th>
                 @endfor
@@ -180,8 +179,10 @@
             @forelse($jadwal->krskhs as $index => $krs)
                 <tr>
                     <td class="text-center">{{ $index + 1 }}</td>
-                    <td class="text-center">{{ $krs->registrasi->mahasiswa->nim ?? '-' }}</td>
-                    <td>{{ $krs->registrasi->mahasiswa->nama ?? '-' }}</td>
+
+                    {{-- Ganti tanda '-' dengan kutip kosong '' --}}
+                    <td class="text-center">{{ $krs->registrasi->mahasiswa->nim ?? '' }}</td>
+                    <td>{{ $krs->registrasi->mahasiswa->nama ?? '' }}</td>
 
                     @for ($i = 1; $i <= 14; $i++)
                         <td></td>
@@ -191,7 +192,7 @@
                 <tr>
                     <td colspan="17" class="text-center">Belum ada mahasiswa yang mengambil mata kuliah ini.</td>
                 </tr>
-            @endforelse
+            @endforelsegi
         </tbody>
     </table>
 

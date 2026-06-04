@@ -10,15 +10,17 @@ class Krskhs extends Model
     protected $primaryKey = 'idKrs';
     public $timestamps = false;
 
-    protected $fillable = ['noReg','jadwalId','nilai'];
+    protected $fillable = ['noReg', 'jadwalId', 'nilai'];
 
     public function registrasi()
     {
-        return $this->belongsTo(Registrasi::class, 'noReg');
+        // Tambahkan 'noReg' sebagai parameter ketiga
+        return $this->belongsTo(Registrasi::class, 'noReg', 'noReg');
     }
+
 
     public function jadwal()
     {
-        return $this->belongsTo(Jadwal::class, 'jadwalId');
+        return $this->belongsTo(Jadwal::class, 'jadwalId', 'jadwalId');
     }
 }
