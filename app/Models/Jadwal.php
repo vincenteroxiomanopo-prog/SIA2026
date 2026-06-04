@@ -11,7 +11,12 @@ class Jadwal extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'hari','waktu','kodeMk','grup','nik','ruang'
+        'hari',
+        'waktu',
+        'kodeMk',
+        'grup',
+        'nik',
+        'ruang'
     ];
 
     public function dosen()
@@ -22,5 +27,9 @@ class Jadwal extends Model
     public function matakuliah()
     {
         return $this->belongsTo(Matakuliah::class, 'kodeMk');
+    }
+    public function krskhs()
+    {
+        return $this->hasMany(Krskhs::class, 'jadwalId', 'jadwalId');
     }
 }

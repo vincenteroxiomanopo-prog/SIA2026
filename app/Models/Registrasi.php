@@ -10,11 +10,11 @@ class Registrasi extends Model
     protected $primaryKey = 'noReg';
     public $timestamps = false;
 
-    protected $fillable = ['tanggal','nim'];
-
+    protected $fillable = ['tanggal', 'nim'];
+    
     public function mahasiswa()
     {
-        return $this->belongsTo(Mahasiswa::class, 'nim');
+        return $this->belongsTo(Mahasiswa::class, 'nim', 'nim');
     }
 
     public function krskhs()

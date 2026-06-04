@@ -34,6 +34,7 @@ Route::get('/dashboard', function () {
 // Grup Rute yang Membutuhkan Autentikasi (Harus Login)
 Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
     Route::get('/krskhs/pdf', [KrskhsController::class, 'pdf'])->name('krskhs.pdf');
+    Route::get('/jadwal/presensi/{id}', [JadwalController::class, 'cetakPresensi'])->name('jadwal.presensi');
 
     // Rute Manajemen Profil (Bawaan Laravel Breeze)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -65,6 +66,7 @@ Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
 });
 Route::middleware(['auth', 'role:dosen,mahasiswa'])->group(function () {
     Route::get('/krskhs/pdf', [KrskhsController::class, 'pdf'])->name('krskhs.pdf');
+    Route::get('/jadwal/presensi/{id}', [JadwalController::class, 'cetakPresensi'])->name('jadwal.presensi');
 
     
     // Rute Manajemen Profil (Bawaan Laravel Breeze)

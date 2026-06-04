@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Matakuliah;
 use App\Models\Dosen;
 use App\Models\Mahasiswa;
-
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class JadwalController extends Controller
 {
@@ -25,7 +25,7 @@ class JadwalController extends Controller
         return view('jadwal.create', [
             'matakuliah' => $matakuliah,
             'dosen' => $dosen
-        ]);        
+        ]);
     }
     public function store(Request $request)
     {
@@ -49,22 +49,22 @@ class JadwalController extends Controller
             ->route('jadwal.index')
             ->with('success', 'Data jadwal berhasil disimpan.');
 
-        
+
     }
     public function show($id)
     {
-        return Jadwal::with(['dosen','matakuliah'])->findOrFail($id);
+        return Jadwal::with(['dosen', 'matakuliah'])->findOrFail($id);
     }
     public function edit($jadwalId)
     {
         $jadwal = Jadwal::findOrFail($jadwalId);
         $matakuliah = Matakuliah::orderBy('namaMk')->get();
         $dosen = Dosen::orderBy('namaDosen')->get();
-        return view('jadwal.edit', compact('jadwal','matakuliah','dosen'));
+        return view('jadwal.edit', compact('jadwal', 'matakuliah', 'dosen'));
     }
 
     public function update(Request $request, $jadwalId)
-    {  
+    {
         $request->validate([
             'hari' => 'required|max:6',
             'waktu' => 'required',
@@ -83,8 +83,8 @@ class JadwalController extends Controller
             'ruang' => $request->ruang,
         ]);
         return redirect()
-        ->route('jadwal.index')
-        ->with('success', 'Data jadwal berhasil diupdate.');
+            ->route('jadwal.index')
+            ->with('success', 'Data jadwal berhasil diupdate.');
     }
 
     public function destroy($jadwalId)
@@ -92,7 +92,18 @@ class JadwalController extends Controller
         $jadwal = Jadwal::findOrFail($jadwalId);
         $jadwal->delete();
         return redirect()->route('jadwal.index')
-                        ->with('success', 'Data jadwal berhasil dihapus.');
+            ->with('success', 'Data jadwal berhasil dihapus.');
     }
-    
+    public function cetakPresensi($id)
+    {
+        // Eager loading relasi berlapis: jadwal -> krskhs -> registrasi -> mahasiswa
+        $jadwal = Jadwal::with(['matakuliah', 'dosen', 'krskhs.registrasi.mahasiswa'])->findOrFail($id);
+
+        // Kirim data ke view PDF
+        // Contoh di JadwalController.php
+        $pdf = Pdf::loadView('jadwal.presensi_pdf', compact('jadwal'))->setPaper('a4', 'landscape'); // disarankan landscape karena ada 17 kolom tabel
+        $pdf->setOption(['isRemoteEnabled' => true]);
+        return $pdf->stream('presensi.pdf');
+    }
+
 }
